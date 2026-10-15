@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Diogo Aguiar — desenvolvedor .NET. Experiência, projetos e roadmap de estudos para back-end C#.">
+<title>Diogo Aguiar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: lista de semanas à esquerda e painel de estudo fixo à direita (desktop); no celular o painel abre como folha sobre a lista. */
+:root {
+  --bg: #f7f6fb; --surface: #ffffff; --ink: #1d1a2b; --muted: #625e78; --line: #e2dfee;
+  --accent: #5b3fd1; --accent-soft: #ece7ff; --done: #1f8a5b; --hint-bg: #f2f0f9; --scrim: rgba(20,16,36,.45);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #13111c; --surface: #1c1928; --ink: #ece9f7; --muted: #a29dbb; --line: #2e2a40; --accent: #a48dff; --accent-soft: #2a2245; --done: #4cc88f; --hint-bg: #231f33; --scrim: rgba(0,0,0,.6); color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #13111c; --surface: #1c1928; --ink: #ece9f7; --muted: #a29dbb; --line: #2e2a40; --accent: #a48dff; --accent-soft: #2a2245; --done: #4cc88f; --hint-bg: #231f33; --scrim: rgba(0,0,0,.6); color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1280px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 28px; }
+header { display: flex; flex-direction: column; gap: 10px; max-width: 820px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(32px, 6vw, 52px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 code { font-family: var(--f-mono); font-weight: 600; color: var(--accent); font-size: .8em; }
+.lede { color: var(--muted); max-width: 64ch; margin: 0; }
+.progress { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.bar { flex: 1 1 240px; height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.count { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: 600 13px var(--f-body); border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.next { font-size: 14px; color: var(--muted); margin: 0; }
+.next button { border: 0; background: none; padding: 0; color: var(--accent); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 24px; align-items: start; }
+.list { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+details.sec { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.sec > summary { list-style: none; cursor: pointer; padding: 20px 22px; display: grid; grid-template-columns: auto 1fr auto; gap: 4px 16px; align-items: baseline; }
+details.sec > summary::-webkit-details-marker { display: none; }
+.secnum { font-family: var(--f-mono); font-size: 12px; color: var(--muted); grid-row: span 2; padding-top: 6px; }
+.sectitle { font-family: var(--f-display); font-weight: 700; font-size: 22px; margin: 0; }
+.secmeta { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.secdesc { grid-column: 2 / 4; color: var(--muted); font-size: 15px; max-width: 72ch; margin: 0; }
+.secbody { padding: 0 22px 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 14px; }
+.week { border: 1px solid var(--line); border-radius: 8px; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.weekhead { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; padding: 0 4px; }
+.weeklabel { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.weektitle { font-weight: 600; font-size: 16px; margin: 0; }
+.weekcount { font-family: var(--f-mono); font-size: 12px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.week.complete { border-color: var(--done); }
+.week.complete .weekcount { color: var(--done); }
+ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.row { display: grid; grid-template-columns: 28px 1fr; align-items: start; border-radius: 6px; }
+.row:hover { background: var(--hint-bg); }
+.row.active { background: var(--accent-soft); }
+.chk { width: 28px; height: 32px; padding: 0; border: 0; background: none; display: grid; place-items: center; border-radius: 6px; }
+.box { width: 16px; height: 16px; border: 1.5px solid var(--muted); border-radius: 4px; display: grid; place-items: center; }
+.chk[aria-checked="true"] .box { background: var(--done); border-color: var(--done); }
+.chk[aria-checked="true"] .box::after { content: ""; width: 4px; height: 8px; border: solid var(--surface); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
+.open { text-align: left; border: 0; background: none; padding: 6px 8px 6px 2px; font: 400 15px/1.4 var(--f-body); color: var(--ink); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; min-width: 0; }
+.open .nm { min-width: 0; }
+.row.done .open .nm { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.mcount { font-family: var(--f-mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+code { font-family: var(--f-mono); font-size: .85em; background: var(--hint-bg); padding: 0 4px; border-radius: 3px; }
+.tag { font-family: var(--f-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--accent-soft); padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: 2px; white-space: nowrap; }
+
+.panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 68px); max-height: calc(100vh - 84px); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; }
+.pbody { overflow-y: auto; padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 14px; }
+.ptop { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.crumb { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.crumb span + span::before { content: "›"; margin-right: 6px; color: var(--line); }
+.close { display: none; border: 0; font-size: 20px; line-height: 1; padding: 4px 8px; }
+.pweek { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.ptitle { font-family: var(--f-display); font-weight: 800; font-size: 28px; line-height: 1.1; margin: 0; text-wrap: balance; }
+.pdesc { margin: 0; font-size: 16px; line-height: 1.6; }
+.pmark { align-self: flex-start; }
+.pmark[aria-pressed="true"] { border-color: var(--done); color: var(--done); }
+.mhead { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.mats { display: flex; flex-direction: column; gap: 8px; }
+a.mat { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); text-decoration: none; min-width: 0; }
+a.mat:hover { border-color: var(--accent); }
+.mico { width: 36px; height: 36px; border-radius: 6px; background: var(--hint-bg); display: grid; place-items: center; font-family: var(--f-mono); font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; }
+.mtitle { font-weight: 600; font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+.mmeta { display: flex; gap: 8px; align-items: center; margin-top: 3px; font-size: 12px; color: var(--muted); min-width: 0; }
+.kind { font-family: var(--f-mono); font-size: 10px; background: var(--ink); color: var(--surface); padding: 1px 6px; border-radius: 3px; white-space: nowrap; }
+.dom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sub { font-size: 12px; color: var(--muted); margin: 0; }
+.pnav { border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; }
+.pnav button { border: 0; border-radius: 0; padding: 12px 18px; text-align: left; display: flex; flex-direction: column; gap: 2px; background: var(--surface); min-width: 0; }
+.pnav button + button { text-align: right; align-items: flex-end; border-left: 1px solid var(--line); }
+.pnav small { font: 400 12px var(--f-body); color: var(--muted); }
+.pnav b { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.pnav button:disabled { opacity: .35; cursor: default; }
+.scrim { display: none; }
+footer { font-size: 13px; color: var(--muted); }
+
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .panel { position: fixed; z-index: 20; left: 0; right: 0; bottom: 0; top: auto; max-height: 86vh; border-radius: 14px 14px 0 0; padding-bottom: env(safe-area-inset-bottom, 0px); transform: translateY(105%); transition: transform .25s ease; }
+  .panel .pbody { padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+  body.sheet .panel { transform: none; }
+  .close { display: block; }
+  .scrim { display: block; position: fixed; inset: 0; z-index: 19; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity .25s; }
+  body.sheet .scrim { opacity: 1; pointer-events: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .bar > i, .panel, .scrim { transition: none; } }
+
+/* Site: barra de navegação, hero com monograma, linha do tempo de experiência e projeto em destaque, seguidos do roadmap. */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.topbar .in { max-width: 1280px; margin: 0 auto; padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.logo { font-family: var(--f-display); font-weight: 800; font-size: 20px; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
+.logo span { color: var(--accent); }
+.topbar nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.topbar nav a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; }
+.topbar nav a:hover { color: var(--ink); }
+@media (max-width: 640px) { .topbar nav a.opt { display: none; } }
+.site { display: flex; flex-direction: column; gap: 88px; }
+section.blk { display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 72px; }
+.blkhead { display: flex; flex-direction: column; gap: 6px; max-width: 70ch; }
+h2.big { font-family: var(--f-display); font-weight: 800; font-size: clamp(26px, 4vw, 38px); line-height: 1.1; margin: 0; text-wrap: balance; }
+.blkhead p { margin: 0; color: var(--muted); }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; padding-top: 24px; }
+.hero .hi { font-size: 18px; color: var(--muted); margin: 0; }
+.hero h1 { font-size: clamp(44px, 8vw, 84px); letter-spacing: -.02em; }
+.hero .role { font-family: var(--f-mono); font-size: 15px; color: var(--accent); margin: 4px 0 0; }
+.hero .pitch { font-size: 19px; line-height: 1.55; max-width: 56ch; margin: 18px 0 0; }
+.hero .pitch b { font-weight: 600; }
+.ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+.ctas a { font-weight: 600; font-size: 15px; padding: 10px 16px; border-radius: 8px; text-decoration: none; border: 1px solid var(--line); color: var(--ink); background: var(--surface); }
+.ctas a.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.ctas a:hover { border-color: var(--accent); }
+.mono { width: clamp(180px, 22vw, 260px); aspect-ratio: 1; max-width: 100%; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; position: relative; }
+.mono span { font-family: var(--f-display); font-weight: 800; font-size: clamp(64px, 8vw, 96px); color: var(--accent); letter-spacing: -.04em; }
+.mono::after { content: "{ }"; position: absolute; right: 6%; bottom: 8%; font-family: var(--f-mono); font-size: 18px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 99px; padding: 4px 12px; }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .mono { order: -1; width: 140px; } .mono span { font-size: 56px; } .mono::after { font-size: 13px; } }
+
+.about { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px; }
+.about p { margin: 0 0 14px; font-size: 17px; line-height: 1.65; max-width: 62ch; }
+.facts { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.facts div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.facts dt, .facts .k { color: var(--muted); }
+.facts .v { text-align: right; font-weight: 600; }
+@media (max-width: 760px) { .about { grid-template-columns: 1fr; } }
+
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.stackrow { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.stackrow .k { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 14px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); }
+.chip.learn { border-style: dashed; color: var(--muted); }
+@media (max-width: 560px) { .stackrow { grid-template-columns: 1fr; gap: 6px; } }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+.job { display: grid; grid-template-columns: 170px 24px minmax(0, 1fr); gap: 0 16px; }
+.job .when { font-family: var(--f-mono); font-size: 13px; color: var(--muted); padding-top: 4px; text-align: right; font-variant-numeric: tabular-nums; }
+.job .rail { position: relative; }
+.job .rail::before { content: ""; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.job .rail::after { content: ""; position: absolute; left: 5px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
+.job.now .rail::after { background: var(--accent); }
+.job:last-child .rail::before { bottom: auto; height: 16px; }
+.job .what { padding-bottom: 36px; display: flex; flex-direction: column; gap: 6px; }
+.job h3 { font-family: var(--f-display); font-weight: 700; font-size: 22px; margin: 0; }
+.job .co { color: var(--accent); font-weight: 600; }
+.job ul.pts { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.job ul.pts li { padding-left: 18px; position: relative; max-width: 70ch; }
+.job ul.pts li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+.job .chips { margin-top: 4px; }
+@media (max-width: 640px) { .job { grid-template-columns: 24px minmax(0, 1fr); } .job .when { grid-column: 2; text-align: left; order: -1; padding: 0; } .job .rail { grid-row: 1 / span 2; grid-column: 1; } .job .what { grid-column: 2; } }
+
+.project { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 26px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; }
+.project h3 { font-family: var(--f-display); font-weight: 800; font-size: 26px; margin: 0 0 8px; }
+.project p { margin: 0 0 12px; max-width: 58ch; }
+.status { display: inline-block; font-family: var(--f-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-left: 2px solid var(--line); }
+.steps li { padding: 6px 0 6px 16px; position: relative; font-size: 15px; }
+.steps li::before { content: ""; position: absolute; left: -6px; top: 13px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line); }
+.steps li.ok::before { background: var(--done); border-color: var(--done); }
+.steps .k { font-family: var(--f-mono); font-size: 11px; color: var(--muted); display: block; text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 760px) { .project { grid-template-columns: 1fr; padding: 20px; } }
+
+.roadhead { display: flex; flex-direction: column; gap: 10px; max-width: 820px; }
+.contact { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+.contact a, .contact div.c { display: flex; flex-direction: column; gap: 4px; padding: 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); text-decoration: none; min-width: 0; }
+.contact a:hover { border-color: var(--accent); }
+.contact .k { font-family: var(--f-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.contact .v { font-weight: 600; overflow-wrap: anywhere; }
+.todo { color: var(--muted); font-weight: 400; font-style: italic; }
+.foot { border-top: 1px solid var(--line); padding-top: 18px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a class="logo" href="#topo">diogo<span>.</span>aguiar</a>
+  <nav aria-label="Seções">
+    <a href="#sobre" class="opt">Sobre</a>
+    <a href="#experiencia">Experiência</a>
+    <a href="#projetos" class="opt">Projetos</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#contato">Contato</a>
+  </nav>
+</div></div>
+
+<div class="wrap site" id="topo">
+  <section class="hero">
+    <div>
+      <p class="hi">Oi! Eu sou o</p>
+      <h1>Diogo Aguiar</h1>
+      <p class="role">dev fullstack .NET + Angular · 2 anos de mercado</p>
+      <p class="pitch">Hoje mantenho sistemas de <b>contabilidade, financeiro e auditoria</b> no Grupo Autoglass. Meu próximo passo é uma vaga de <b>desenvolvedor back-end .NET pleno</b>, e estou documentando aqui tudo o que estou estudando para chegar lá.</p>
+      <div class="ctas">
+        <a class="primary" href="#roadmap">Ver meu roadmap</a>
+        <a href="#experiencia">Experiência</a>
+        <a href="#contato">Falar comigo</a>
+      </div>
+    </div>
+    <div class="mono" aria-hidden="true"><span>DA</span></div>
+  </section>
+
+  <section class="blk" id="sobre">
+    <div class="blkhead"><span class="eyebrow">Sobre mim</span><h2 class="big">Do datacenter ao back-end</h2></div>
+    <div class="about">
+      <div>
+        <p>Comecei em TI no suporte de infraestrutura e datacenter da SEP-ES. Em 2024 entrei no Grupo Autoglass como estagiário por um programa de formação, e desde junho de 2025 sou desenvolvedor no time que sustenta o Backoffice da empresa.</p>
+        <p>No dia a dia trabalho com .NET 8, Oracle e Angular, cuidando de sistemas que as áreas de contabilidade, financeiro e auditoria usam para fechar o mês. Boa parte do meu trabalho é investigar problemas em produção e otimizar consultas.</p>
+        <p>Agora quero me aprofundar em back-end: arquitetura, concorrência, sistemas distribuídos e System Design.</p>
+      </div>
+      <div class="facts">
+        <div><span class="k">Base</span><span class="v">Vitória, ES</span></div>
+        <div><span class="k">Hoje</span><span class="v">Desenvolvedor · Grupo Autoglass</span></div>
+        <div><span class="k">Foco</span><span class="v">Back-end .NET</span></div>
+        <div><span class="k">Formação</span><span class="v">ADS · conclusão em 2026</span></div>
+        <div><span class="k">Próximo</span><span class="v">Pós-graduação em 2027</span></div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="stackrow"><span class="k">Back-end</span><div class="chips"><span class="chip">C#</span><span class="chip">.NET 8</span><span class="chip">APIs REST</span><span class="chip">NHibernate</span><span class="chip">Dapper</span><span class="chip">Entity Framework</span></div></div>
+      <div class="stackrow"><span class="k">Dados</span><div class="chips"><span class="chip">Oracle</span><span class="chip">Otimização de queries</span><span class="chip">PostgreSQL</span></div></div>
+      <div class="stackrow"><span class="k">Front-end</span><div class="chips"><span class="chip">Angular 21</span><span class="chip">RxJS</span></div></div>
+      <div class="stackrow"><span class="k">Qualidade</span><div class="chips"><span class="chip">xUnit</span><span class="chip">NSubstitute</span><span class="chip">FluentAssertions</span><span class="chip">NBuilder</span><span class="chip">SonarQube</span></div></div>
+      <div class="stackrow"><span class="k">Entrega</span><div class="chips"><span class="chip">Azure DevOps CI/CD</span><span class="chip">Jenkins</span><span class="chip">Claude Code</span><span class="chip">GitHub Copilot</span></div></div>
+      <div class="stackrow"><span class="k">Estudando</span><div class="chips"><span class="chip learn">Docker</span><span class="chip learn">Workers</span><span class="chip learn">Mensageria</span><span class="chip learn">Cloud</span><span class="chip learn">System Design</span></div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="experiencia">
+    <div class="blkhead"><span class="eyebrow">Minha experiência</span><h2 class="big">Onde trabalhei</h2></div>
+    <ol class="timeline">
+      <li class="job now"><span class="when">JUN 2025 – HOJE</span><span class="rail"></span><div class="what">
+        <h3>Desenvolvedor de Software</h3><span class="co">Grupo Autoglass · Sustentação do Backoffice</span>
+        <ul class="pts">
+          <li>Mantenho e evoluo sistemas usados pelas áreas de contabilidade, financeiro e auditoria.</li>
+          <li>Desenvolvo APIs REST em .NET 8 com NHibernate e Dapper sobre Oracle, com foco em consultas e otimização de queries.</li>
+          <li>Trabalho no front-end em Angular com RxJS e mantenho testes unitários com xUnit, NSubstitute, FluentAssertions e NBuilder.</li>
+          <li>Entrego pelo pipeline de CI/CD no Azure DevOps.</li>
+        </ul>
+        <div class="chips"><span class="chip">.NET 8</span><span class="chip">Oracle</span><span class="chip">Angular</span><span class="chip">Azure</span></div>
+      </div></li>
+      <li class="job"><span class="when">JUN 2024 – JUN 2025</span><span class="rail"></span><div class="what">
+        <h3>Estagiário de Desenvolvimento</h3><span class="co">Grupo Autoglass</span>
+        <ul class="pts">
+          <li>Entrei por um programa de formação de 6 meses, encerrado com uma biblioteca virtual desenvolvida em equipe como projeto final.</li>
+          <li>Depois do programa, passei a atuar no time de sustentação do Backoffice até ser efetivado.</li>
+          <li>Trabalhei com Jenkins e SonarQube no fluxo de build e qualidade.</li>
+        </ul>
+      </div></li>
+      <li class="job"><span class="when">ANTES DE 2024</span><span class="rail"></span><div class="what">
+        <h3>Estagiário de Infraestrutura</h3><span class="co">SEP-ES</span>
+        <ul class="pts">
+          <li>Suporte de infraestrutura e datacenter.</li>
+        </ul>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="blk" id="projetos">
+    <div class="blkhead"><span class="eyebrow">Projetos</span><h2 class="big">O que estou construindo</h2></div>
+    <article class="project">
+      <div>
+        <span class="status">Em desenvolvimento</span>
+        <h3>API de Estoque</h3>
+        <p>Projeto pessoal para praticar back-end de ponta a ponta: uma API de controle de estoque em .NET com PostgreSQL, organizada em DDD.</p>
+        <p>Cada funcionalidade nova entra como um passo do roadmap abaixo: autenticação, processamento em background e, depois, mensageria.</p>
+        <div class="chips"><span class="chip">.NET</span><span class="chip">PostgreSQL</span><span class="chip">DDD</span><span class="chip">Entity Framework</span><span class="chip">Mapster</span></div>
+      </div>
+      <ol class="steps">
+        <li class="ok"><span class="k">Feito</span>Entidades e estrutura inicial em DDD</li>
+        <li><span class="k">Próximo</span>Autenticação com JWT</li>
+        <li><span class="k">Depois</span>Jobs agendados</li>
+        <li><span class="k">Depois</span>Workers com BackgroundService</li>
+        <li><span class="k">Depois</span>Docker</li>
+      </ol>
+    </article>
+  </section>
+
+  <section class="blk" id="roadmap">
+    <div class="roadhead">
+      <span class="eyebrow">Meu roadmap de estudos · 24 semanas</span>
+      <h2 class="big">Roadmap C# Backend</h2>
+      <p class="lede">Tudo o que estou estudando para entrevistas de back-end .NET pleno. Clique em um tópico para ver a explicação e os materiais. Tópicos com <span class="tag">.NET</span> são específicos da plataforma.</p>
+      <div class="progress">
+        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+        <span class="count" id="total">0/0</span>
+        <div class="tools">
+          <button id="expand" type="button">Expandir tudo</button>
+          <button id="reset" type="button">Zerar progresso</button>
+        </div>
+      </div>
+      <p class="next" id="next"></p>
+    </div>
+<div class="layout">
+    <main class="list" id="root"></main>
+    <aside class="panel" id="panel" aria-label="Detalhes do tópico">
+      <div class="pbody">
+        <div class="ptop"><div class="crumb" id="crumb"></div><button class="close" id="close" type="button" aria-label="Fechar">×</button></div>
+        <span class="pweek" id="pweek"></span>
+        <h2 class="ptitle" id="ptitle"></h2>
+        <p class="pdesc" id="pdesc"></p>
+        <button class="pmark" id="pmark" type="button" aria-pressed="false">Marcar como estudado</button>
+        <div class="mhead"><span>Material do tópico</span><span id="tcount"></span></div>
+        <div class="mats" id="tmats"></div>
+        <div class="mhead"><span>Base da semana</span><span id="wcount"></span></div>
+        <p class="sub">Materiais que cobrem a semana inteira.</p>
+        <div class="mats" id="wmats"></div>
+      </div>
+      <nav class="pnav">
+        <button id="prev" type="button"><small>← Anterior</small><b id="prevn"></b></button>
+        <button id="nextb" type="button"><small>Próximo →</small><b id="nextn"></b></button>
+      </nav>
+    </aside>
+  </div>
+  </section>
+
+  <section class="blk" id="contato">
+    <div class="blkhead"><span class="eyebrow">Contato</span><h2 class="big">Vamos conversar</h2><p>Aberto a vagas de desenvolvedor back-end .NET pleno, presenciais na Grande Vitória ou remotas.</p></div>
+    <div class="contact">
+      <div class="c"><span class="k">LinkedIn</span><span class="v todo">adicione o link do seu perfil</span></div>
+      <div class="c"><span class="k">GitHub</span><span class="v todo">adicione o link do seu GitHub</span></div>
+      <div class="c"><span class="k">E-mail</span><span class="v todo">adicione seu e-mail profissional</span></div>
+    </div>
+    <div class="foot"><span>Criado por Diogo Aguiar</span><span>Roadmap inspirado no de Yudi Ganeko</span></div>
+  </section>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<script>
+// Materiais: chave -> [título, url, tipo]
+const R = {
+ cs50:["CS50 — Introduction to Computer Science","https://cs50.harvard.edu/x/","Curso"],
+ coredumped:["Core Dumped — vídeos sobre CPU, memória e SO","https://www.youtube.com/@CoreDumpped","Vídeo"],
+ csapp:["Computer Systems: A Programmer's Perspective","https://csapp.cs.cmu.edu/","Livro"],
+ nand:["Nand2Tetris — do transistor ao compilador","https://www.nand2tetris.org/","Curso"],
+ ostep:["Operating Systems: Three Easy Pieces (grátis)","https://pages.cs.wisc.edu/~remzi/OSTEP/","Livro"],
+ beneater:["Ben Eater — computador de 8 bits na protoboard","https://eater.net/","Vídeo"],
+ managedexec:["Processo de execução gerenciada no .NET","https://learn.microsoft.com/en-us/dotnet/standard/managed-execution-process","Doc"],
+ neetcode:["NeetCode Roadmap","https://neetcode.io/roadmap","Prática"],
+ leetcode:["LeetCode — lista de problemas","https://leetcode.com/problemset/","Prática"],
+ grind75:["Grind 75 — plano semanal de problemas","https://www.techinterviewhandbook.org/grind75","Prática"],
+ bigo:["Big-O Cheat Sheet","https://www.bigocheatsheet.com/","Referência"],
+ visualgo:["VisuAlgo — algoritmos animados","https://visualgo.net/","Visualização"],
+ abdul:["Abdul Bari — algoritmos","https://www.youtube.com/@abdul_bari","Vídeo"],
+ collections:["Coleções no .NET","https://learn.microsoft.com/en-us/dotnet/standard/collections/","Doc"],
+ pq:["PriorityQueue<TElement,TPriority>","https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.priorityqueue-2","Doc"],
+ dict:["Dictionary<TKey,TValue>","https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2","Doc"],
+ sb:["StringBuilder","https://learn.microsoft.com/en-us/dotnet/api/system.text.stringbuilder","Doc"],
+ hpbn:["High Performance Browser Networking (grátis)","https://hpbn.co/","Livro"],
+ mdnhttp:["MDN — HTTP","https://developer.mozilla.org/en-US/docs/Web/HTTP","Doc"],
+ beej:["Beej's Guide to Network Programming","https://beej.us/guide/bgnet/","Livro"],
+ cfdns:["Cloudflare — O que é DNS","https://www.cloudflare.com/learning/dns/what-is-dns/","Artigo"],
+ tls13:["The Illustrated TLS 1.3 Connection","https://tls13.xargs.org/","Visualização"],
+ apidesign:["Microsoft — Boas práticas de design de API","https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design","Guia"],
+ httpfactory:["IHttpClientFactory","https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory","Doc"],
+ luke:["Use The Index, Luke (grátis)","https://use-the-index-luke.com/","Livro"],
+ lukeora:["Execution plan no Oracle com DBMS_XPLAN","https://use-the-index-luke.com/sql/explain-plan/oracle/getting-an-execution-plan","Artigo"],
+ ddia:["Designing Data-Intensive Applications","https://dataintensive.net/","Livro"],
+ pgiso:["PostgreSQL — Transaction Isolation","https://www.postgresql.org/docs/current/transaction-iso.html","Doc"],
+ pgmvcc:["PostgreSQL — Introdução ao MVCC","https://www.postgresql.org/docs/current/mvcc-intro.html","Doc"],
+ efconc:["EF Core — Conflitos de concorrência","https://learn.microsoft.com/en-us/ef/core/saving/concurrency","Doc"],
+ eftrans:["EF Core — Transações","https://learn.microsoft.com/en-us/ef/core/saving/transactions","Doc"],
+ owasp:["OWASP Top 10","https://owasp.org/www-project-top-ten/","Referência"],
+ owasppw:["OWASP — Password Storage Cheat Sheet","https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html","Referência"],
+ owaspsql:["OWASP — SQL Injection Prevention Cheat Sheet","https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html","Referência"],
+ jwt:["Introdução ao JWT","https://jwt.io/introduction","Artigo"],
+ aspsec:["ASP.NET Core — Segurança","https://learn.microsoft.com/en-us/aspnet/core/security/","Doc"],
+ aspauthz:["ASP.NET Core — Authorization","https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction","Doc"],
+ cors:["ASP.NET Core — CORS","https://learn.microsoft.com/en-us/aspnet/core/security/cors","Doc"],
+ mdncors:["MDN — CORS","https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS","Doc"],
+ idemp:["Idempotent Consumer pattern","https://microservices.io/patterns/communication-style/idempotent-consumer.html","Artigo"],
+ sre:["Google SRE Book (grátis)","https://sre.google/sre-book/table-of-contents/","Livro"],
+ otel:[".NET Observability com OpenTelemetry","https://learn.microsoft.com/en-us/dotnet/core/diagnostics/observability-with-otel","Doc"],
+ health:["ASP.NET Core — Health checks","https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks","Doc"],
+ logging:["Logging no .NET","https://learn.microsoft.com/en-us/dotnet/core/extensions/logging","Doc"],
+ azpipelines:["Azure Pipelines","https://learn.microsoft.com/en-us/azure/devops/pipelines/","Doc"],
+ slots:["Azure App Service — Deployment slots","https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots","Doc"],
+ kokosa:["Pro .NET Memory Management (Kokosa)","https://prodotnetmemory.com/","Livro"],
+ gc:["Fundamentos do Garbage Collector","https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals","Doc"],
+ gcwk:["Workstation vs Server GC","https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/workstation-server-gc","Doc"],
+ dispose:["Implementando Dispose","https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose","Doc"],
+ span:["Memory<T> e Span<T>","https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/","Doc"],
+ aot:["Native AOT","https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/","Doc"],
+ tiered:["Configuração de compilação (Tiered, PGO)","https://learn.microsoft.com/en-us/dotnet/core/runtime-config/compilation","Doc"],
+ perf8:["Performance Improvements in .NET 8 (Toub)","https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/","Artigo"],
+ valtypes:["Value types em C#","https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types","Doc"],
+ boxing:["Boxing e unboxing","https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing","Doc"],
+ alc:["Entendendo o AssemblyLoadContext","https://learn.microsoft.com/en-us/dotnet/core/dependency-loading/understanding-assemblyloadcontext","Doc"],
+ memleak:["Depurar um memory leak no .NET","https://learn.microsoft.com/en-us/dotnet/core/diagnostics/debug-memory-leak","Tutorial"],
+ albahari:["Threading in C# — Joseph Albahari (grátis)","https://www.albahari.com/threading/","Livro"],
+ toubasync:["How Async/Await Really Works (Toub)","https://devblogs.microsoft.com/dotnet/how-async-await-really-works/","Artigo"],
+ cleary:["Don't Block on Async Code (Cleary)","https://blog.stephencleary.com/2012/07/dont-block-on-async-code.html","Artigo"],
+ clearybook:["Concurrency in C# Cookbook (Cleary)","https://stephencleary.com/book/","Livro"],
+ fowler:["Async Guidance — David Fowler","https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md","Guia"],
+ asyncdocs:["Programação assíncrona em C#","https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/","Doc"],
+ channels:["System.Threading.Channels","https://learn.microsoft.com/en-us/dotnet/core/extensions/channels","Doc"],
+ concurrent:["Coleções thread-safe","https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/","Doc"],
+ cancel:["Cancelamento em threads gerenciadas","https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads","Doc"],
+ configawait:["ConfigureAwait FAQ (Toub)","https://devblogs.microsoft.com/dotnet/configureawait-faq/","Artigo"],
+ tpl:["Task Parallel Library","https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl","Doc"],
+ syncprim:["Primitivas de sincronização no .NET","https://learn.microsoft.com/en-us/dotnet/standard/threading/overview-of-synchronization-primitives","Doc"],
+ volatile:["Palavra-chave volatile","https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile","Doc"],
+ lockstmt:["Instrução lock","https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock","Doc"],
+ interlocked:["Classe Interlocked","https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked","Doc"],
+ threadpool:["Managed thread pool","https://learn.microsoft.com/en-us/dotnet/standard/threading/the-managed-thread-pool","Doc"],
+ plinq:["Introdução ao PLINQ","https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/introduction-to-plinq","Doc"],
+ valuetask:["Understanding ValueTask (Toub)","https://devblogs.microsoft.com/dotnet/understanding-the-whys-whats-and-whens-of-valuetask/","Artigo"],
+ di:["Injeção de dependência no .NET","https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection","Doc"],
+ middleware:["ASP.NET Core — Middleware","https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/","Doc"],
+ host:["Generic Host","https://learn.microsoft.com/en-us/dotnet/core/extensions/generic-host","Doc"],
+ routing:["ASP.NET Core — Routing","https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing","Doc"],
+ filters:["ASP.NET Core — Filters","https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters","Doc"],
+ minimal:["Minimal APIs","https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis","Doc"],
+ modelbinding:["Model binding","https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding","Doc"],
+ options:["Options pattern","https://learn.microsoft.com/en-us/dotnet/core/extensions/options","Doc"],
+ eftrack:["EF Core — Change Tracking","https://learn.microsoft.com/en-us/ef/core/change-tracking/","Doc"],
+ efload:["EF Core — Carregando dados relacionados","https://learn.microsoft.com/en-us/ef/core/querying/related-data/","Doc"],
+ efperf:["EF Core — Performance","https://learn.microsoft.com/en-us/ef/core/performance/","Doc"],
+ eftracking:["EF Core — Tracking vs No-Tracking","https://learn.microsoft.com/en-us/ef/core/querying/tracking","Doc"],
+ dapper:["Dapper (repositório e README)","https://github.com/DapperLib/Dapper","Repo"],
+ andrewlock:["Andrew Lock — .NET Escapades","https://andrewlock.net/","Blog"],
+ milan:["Milan Jovanović — blog","https://www.milanjovanovic.tech/blog","Blog"],
+ nick:["Nick Chapsas","https://www.youtube.com/@nickchapsas","Vídeo"],
+ kafka:["Apache Kafka — Introdução","https://kafka.apache.org/intro","Doc"],
+ confluent:[".NET Client for Apache Kafka","https://docs.confluent.io/kafka-clients/dotnet/current/overview.html","Doc"],
+ rabbit:["RabbitMQ — tutorial em .NET","https://www.rabbitmq.com/tutorials/tutorial-one-dotnet","Tutorial"],
+ masstransit:["MassTransit","https://masstransit.io/","Doc"],
+ hosted:["Background tasks com hosted services","https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services","Doc"],
+ eventdriven:["Event-driven architecture style","https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/event-driven","Guia"],
+ awsretry:["Timeouts, retries and backoff with jitter (AWS)","https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/","Artigo"],
+ polly:["Polly — documentação","https://www.pollydocs.org/","Doc"],
+ resilience:["Desenvolvimento resiliente no .NET","https://learn.microsoft.com/en-us/dotnet/core/resilience/","Doc"],
+ circuit:["Circuit Breaker pattern","https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker","Guia"],
+ retrypat:["Retry pattern","https://learn.microsoft.com/en-us/azure/architecture/patterns/retry","Guia"],
+ ratelimit:["ASP.NET Core — Rate limiting","https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit","Doc"],
+ patterns:["Cloud Design Patterns","https://learn.microsoft.com/en-us/azure/architecture/patterns/","Guia"],
+ saga:["Saga pattern","https://microservices.io/patterns/data/saga.html","Artigo"],
+ outbox:["Transactional Outbox","https://microservices.io/patterns/data/transactional-outbox.html","Artigo"],
+ raft:["Raft — visualização do consenso","https://raft.github.io/","Visualização"],
+ jepsen:["Jepsen — modelos de consistência","https://jepsen.io/consistency","Referência"],
+ eshop:["eShop — app de referência .NET","https://github.com/dotnet/eShop","Repo"],
+ sdprimer:["System Design Primer","https://github.com/donnemartin/system-design-primer","Guia"],
+ hello:["Hello Interview — System Design in a Hurry","https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction","Guia"],
+ bbg:["ByteByteGo","https://bytebytego.com/","Curso"],
+ azarch:["Azure Architecture Center","https://learn.microsoft.com/en-us/azure/architecture/","Guia"],
+ caching:["Caching no ASP.NET Core","https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview","Doc"],
+ cfcdn:["Cloudflare — O que é CDN","https://www.cloudflare.com/learning/cdn/what-is-a-cdn/","Artigo"],
+ cflb:["Cloudflare — O que é load balancing","https://www.cloudflare.com/learning/performance/what-is-load-balancing/","Artigo"],
+ signalr:["SignalR","https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction","Doc"],
+ interviewing:["interviewing.io — mock interviews","https://interviewing.io/","Prática"],
+ balta:["balta.io (PT-BR)","https://balta.io/","Curso"],
+ devio:["desenvolvedor.io (PT-BR)","https://desenvolvedor.io/","Curso"],
+ efmig:["EF Core — Migrations","https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/","Doc"]
+};
+
+// Topico: [nome, descrição, [materiais do tópico], é .NET?]
+const D = [
+ { t: "Fundamentos", d: "Como o computador executa um programa: CPU, memória, compilação, stack e heap, e o papel do sistema operacional. Base para entender performance, concorrência e o comportamento do CLR.", w: [
+  ["Como computadores executam programas", ["coredumped","cs50","csapp","nand"], [
+   ["CPU","O processador busca, decodifica e executa instruções em ciclos, usando registradores e caches. Isso explica por que acesso à memória e branches mal previstos custam caro.",["coredumped","beneater"]],
+   ["RAM","Memória volátil onde ficam código e dados em execução. É ordens de grandeza mais lenta que os caches L1/L2/L3, por isso localidade de dados importa para performance.",["coredumped"]],
+   ["Código fonte e código de máquina","O código que você escreve é texto; a CPU só entende instruções binárias. Entre os dois existe tradução: compilação, interpretação ou, no .NET, IL + JIT.",["cs50"]],
+   ["Compilação","Transformar código fonte em algo executável. No .NET o Roslyn compila C# para IL e, em tempo de execução, o JIT gera código nativo (ou o AOT faz isso antes).",["managedexec","cs50"]],
+   ["Preprocessing, compiling, assembling e linking","As quatro etapas clássicas de um compilador C. Ajudam a entender o que é um assembly, uma dependência e por que o .NET resolve parte disso em runtime.",["cs50","csapp"]],
+   ["Endereços de memória","Toda variável vive num endereço. Ponteiros e referências são endereços; em C# uma referência de classe aponta para um objeto no heap.",["cs50"]],
+   ["Stack","Região de memória por thread, organizada em frames de chamadas. Alocação é barata e liberação automática ao sair da função. Variáveis locais de value types costumam ficar aqui.",["coredumped","csapp"]],
+   ["Heap","Região para objetos de vida mais longa e tamanho dinâmico. Em .NET, toda instância de classe vai para o heap gerenciado e é liberada pelo GC.",["coredumped","gc"]],
+   ["Call Stack","A pilha de chamadas em andamento. É o que você vê no stack trace de uma exceção, e recursão sem fim estoura ela (StackOverflowException).",["cs50"]]
+  ]],
+  ["Sistema operacional, processos e memória", ["ostep","coredumped"], [
+   ["Sistema operacional","Camada que gerencia CPU, memória, disco e rede e oferece isso aos programas por chamadas de sistema.",["ostep"]],
+   ["Processo","Programa em execução com seu próprio espaço de memória. Cada app .NET roda num processo (dotnet ou o executável publicado).",["ostep"]],
+   ["Thread","Unidade de execução dentro de um processo. Threads compartilham o heap, mas cada uma tem sua stack.",["ostep","coredumped"]],
+   ["Process vs Thread","Processos são isolados e caros de criar; threads são leves e compartilham memória, o que exige sincronização.",["coredumped"]],
+   ["Context Switch","O SO pausa uma thread e retoma outra, salvando registradores. É caro, e é um dos motivos do async/await existir em vez de uma thread por requisição.",["ostep"]],
+   ["Virtual Memory","Cada processo enxerga um espaço de endereços próprio, que o SO mapeia para RAM física ou disco.",["ostep"]],
+   ["Address Space","O conjunto de endereços que um processo pode usar: código, stack, heap e bibliotecas.",["ostep"]],
+   ["Paging","A memória é dividida em páginas mapeadas por uma tabela. Page faults acontecem quando a página não está na RAM.",["ostep"]],
+   ["I/O","Leitura e escrita em disco e rede. É lento comparado à CPU. Async I/O libera a thread enquanto espera, que é a base do async/await no ASP.NET Core.",["ostep","asyncdocs"]]
+  ]]
+ ]},
+ { t: "LeetCode em C#", d: "Estruturas de dados, algoritmos e Big O aplicados às entrevistas de código, usando as coleções do .NET. Reconhecer padrões como two pointers, sliding window, BFS/DFS e programação dinâmica.", w: [
+  ["Big O e estruturas fundamentais", ["neetcode","bigo","collections","visualgo"], [
+   ["Time Complexity","Quanto o tempo de execução cresce conforme a entrada cresce. É a primeira pergunta depois de qualquer solução em entrevista.",["bigo"]],
+   ["Space Complexity","Quanta memória extra o algoritmo usa em função da entrada, incluindo a stack de recursão.",["bigo"]],
+   ["Big O","Notação do pior caso assintótico: O(1), O(log n), O(n), O(n log n), O(n²). Ignora constantes e foca na tendência.",["bigo","abdul"]],
+   ["Array","Bloco contíguo de memória com acesso O(1) por índice. Em C#: <code>int[]</code>; <code>Span&lt;T&gt;</code> permite fatiar sem copiar.",["visualgo","span"]],
+   ["Dynamic Array","<code>List&lt;T&gt;</code> usa um array interno que dobra de capacidade quando enche. Add é O(1) amortizado; inserir no meio é O(n).",["collections"]],
+   ["Linked List","Nós ligados por referência. Inserção O(1) com o nó em mãos, acesso O(n). Em C#: <code>LinkedList&lt;T&gt;</code>; em LeetCode você monta o <code>ListNode</code>.",["visualgo"]],
+   ["Stack","LIFO: último a entrar, primeiro a sair. <code>Stack&lt;T&gt;</code> com Push, Pop e Peek.",["collections"]],
+   ["Queue","FIFO: primeiro a entrar, primeiro a sair. <code>Queue&lt;T&gt;</code> com Enqueue e Dequeue. Base do BFS.",["collections"]],
+   ["Deque","Fila com inserção e remoção nas duas pontas. O .NET não tem um nativo: use <code>LinkedList&lt;T&gt;</code> ou um buffer circular.",["visualgo"]]
+  ]],
+  ["Hash Tables, Trees, Heaps e Graphs", ["neetcode","visualgo","collections"], [
+   ["Hash Table","Mapeia chave para posição via função hash. Busca média O(1); colisões e rehash podem degradar.",["visualgo"]],
+   ["Dictionary&lt;TKey,TValue&gt;","A hash table do .NET. Depende de <code>GetHashCode</code> e <code>Equals</code> corretos. Prefira <code>TryGetValue</code> a <code>ContainsKey</code> + indexador.",["dict"],1],
+   ["HashSet&lt;T&gt;","Conjunto sem duplicatas com busca O(1). Muito usado para \"já vi esse valor?\".",["collections"],1],
+   ["Tree","Estrutura hierárquica com raiz e filhos, sem ciclos.",["visualgo"]],
+   ["Binary Tree","Cada nó tem até dois filhos. Base de BST, heap e muitos problemas recursivos.",["visualgo"]],
+   ["Binary Search Tree","Esquerda menor, direita maior. Busca O(log n) se balanceada. <code>SortedSet&lt;T&gt;</code> e <code>SortedDictionary</code> usam red-black tree.",["visualgo","collections"]],
+   ["Heap","Árvore binária completa onde o pai é sempre menor (min-heap) ou maior que os filhos. Pegar o topo é O(1), inserir e remover O(log n).",["visualgo"]],
+   ["Priority Queue","Fila ordenada por prioridade. <code>PriorityQueue&lt;TElement,TPriority&gt;</code> é um min-heap; para max-heap inverta o comparer.",["pq"]],
+   ["Graph","Vértices e arestas. Em C# use lista de adjacência: <code>Dictionary&lt;int, List&lt;int&gt;&gt;</code>.",["visualgo"]]
+  ]],
+  ["Algoritmos fundamentais", ["neetcode","abdul","visualgo"], [
+   ["Linear Search","Percorre tudo até achar. O(n). Ponto de partida antes de otimizar.",["visualgo"]],
+   ["Binary Search","Divide o intervalo ao meio em entrada ordenada. O(log n). Cuidado com <code>mid = lo + (hi - lo) / 2</code> e as bordas.",["neetcode"]],
+   ["Sorting","<code>Array.Sort</code> usa introsort (não estável). LINQ <code>OrderBy</code> é estável. Saber o custo O(n log n) é o essencial.",["visualgo"]],
+   ["Merge Sort","Divide, ordena as metades e intercala. O(n log n) garantido e estável, com O(n) de memória extra.",["visualgo","abdul"]],
+   ["Recursion","Função que chama a si mesma com caso base. Pense em qual subproblema resolve o problema atual.",["cs50"]],
+   ["Divide and Conquer","Quebrar em subproblemas independentes, resolver e combinar. Merge sort e quicksort são exemplos.",["abdul"]]
+  ]],
+  ["Arrays e Strings", ["neetcode","grind75","leetcode"], [
+   ["Arrays","Maioria dos problemas Easy e Medium começa aqui. Treine percorrer, trocar e acumular em uma passada.",["neetcode"]],
+   ["Strings","Em C# strings são imutáveis: concatenar em loop é O(n²). Use <code>StringBuilder</code> ou <code>char[]</code>.",["sb"]],
+   ["Hashing","Usar Dictionary ou HashSet para trocar tempo por memória, como em Two Sum.",["neetcode"]],
+   ["Two Pointers","Dois índices andando no array, geralmente das pontas para o meio ou um rápido e um lento.",["neetcode"]],
+   ["Sliding Window","Janela que expande e contrai sobre o array para resolver subarrays/substrings em O(n).",["neetcode"]],
+   ["Prefix Sum","Pré-calcular somas acumuladas para responder soma de intervalo em O(1).",["neetcode"]]
+  ]],
+  ["Estruturas e padrões de entrevista", ["neetcode","grind75"], [
+   ["Linked List","Padrões: reverter, achar o meio com ponteiros rápido/lento, detectar ciclo, nó dummy.",["neetcode"]],
+   ["Stack","Padrões: parênteses válidos, monotonic stack (próximo maior elemento).",["neetcode"]],
+   ["Queue","Padrões: BFS por nível, simulações.",["neetcode"]],
+   ["Binary Search","Padrões: busca na resposta, array rotacionado, primeira/última ocorrência.",["neetcode"]],
+   ["Heap / Priority Queue","Padrões: top K, merge de K listas, mediana em stream.",["neetcode","pq"]],
+   ["Intervals","Ordenar por início e mesclar ou contar sobreposições.",["neetcode"]]
+  ]],
+  ["Trees, Graphs e problemas recursivos", ["neetcode","grind75","abdul"], [
+   ["Trees","Padrões: profundidade, árvore balanceada, LCA, validar BST.",["neetcode"]],
+   ["DFS","Busca em profundidade com recursão ou Stack. Para árvores: pré, in e pós-ordem.",["visualgo"]],
+   ["BFS","Busca em largura com Queue. Dá o menor caminho em grafo sem peso.",["visualgo"]],
+   ["Graphs","Padrões: ilhas em grid, ordenação topológica, detecção de ciclo, union-find.",["neetcode"]],
+   ["Backtracking","Explorar escolhas, desfazer e tentar a próxima: subsets, permutações, combinações.",["neetcode"]],
+   ["Greedy","Escolher o melhor local em cada passo. Funciona quando dá para provar que o local leva ao global.",["neetcode"]],
+   ["Dynamic Programming básico","Subproblemas sobrepostos + memoização ou tabela. Comece por climbing stairs, house robber e coin change.",["neetcode","abdul"]]
+  ]]
+ ]},
+ { t: "Backend", d: "O que acontece por trás de uma API: redes e HTTP, bancos relacionais (SQL, índices, transações e concorrência), autenticação e segurança, e como operar um serviço em produção.", w: [
+  ["Redes e HTTP", ["hpbn","mdnhttp","beej"], [
+   ["IP","Endereçamento e roteamento de pacotes entre máquinas. IPv4, IPv6, sub-redes.",["hpbn"]],
+   ["Portas","Identificam o processo dentro da máquina. HTTP 80, HTTPS 443, Oracle 1521.",["beej"]],
+   ["DNS","Traduz nome em IP, com cache em vários níveis e TTL.",["cfdns"]],
+   ["TCP","Conexão confiável e ordenada com handshake de 3 vias, controle de fluxo e retransmissão.",["hpbn"]],
+   ["UDP","Sem conexão nem garantia de entrega. Mais rápido; usado em DNS, streaming e QUIC.",["hpbn"]],
+   ["Sockets","A API do SO para comunicação de rede. Tudo, inclusive o Kestrel, é construído sobre eles.",["beej"]],
+   ["TLS","Criptografia e autenticação da conexão via certificados e handshake.",["tls13","hpbn"]],
+   ["HTTP","Protocolo de requisição e resposta: métodos, status codes, headers. Diferenças entre HTTP/1.1, 2 e 3.",["mdnhttp"]],
+   ["HTTPS","HTTP sobre TLS. Garante confidencialidade e que o servidor é quem diz ser.",["mdnhttp"]],
+   ["REST","Estilo de API orientado a recursos, verbos HTTP corretos e stateless.",["apidesign"]],
+   ["Keep-Alive","Reaproveitar a conexão TCP entre requisições. No .NET, criar <code>HttpClient</code> a cada chamada esgota sockets; use <code>IHttpClientFactory</code>.",["httpfactory","mdnhttp"]]
+  ]],
+  ["Banco de Dados I — SQL, índices e performance", ["luke","ddia"], [
+   ["Modelo relacional","Tabelas, linhas e relações, normalização e quando desnormalizar.",["ddia"]],
+   ["SQL","SELECT, agregações, GROUP BY, subqueries e window functions.",["luke"]],
+   ["Joins","INNER, LEFT, RIGHT, FULL. Entenda também os algoritmos: nested loops, hash join, merge join.",["luke"]],
+   ["Primary Key","Identificador único da linha, normalmente com índice clusterizado ou único.",["luke"]],
+   ["Foreign Key","Garante integridade entre tabelas. Indexe as FKs para joins e deletes rápidos.",["luke"]],
+   ["Indexes","Estrutura auxiliar que evita full scan. Ordem das colunas importa; índice demais custa na escrita.",["luke"]],
+   ["B+ Tree","A estrutura por trás da maioria dos índices: folhas ligadas e ordenadas, busca O(log n).",["luke"]],
+   ["Query Execution","Como o banco executa: parse, plano, acesso por índice ou scan, joins, ordenação.",["luke"]],
+   ["Query Planner","Otimizador que escolhe o plano pelo custo estimado com base em estatísticas.",["luke"]],
+   ["EXPLAIN","Mostra o plano escolhido. No Oracle: <code>EXPLAIN PLAN</code> e <code>DBMS_XPLAN.DISPLAY_CURSOR</code>.",["lukeora"]],
+   ["Connection Pool","Reaproveitar conexões abertas. O ADO.NET mantém um pool por connection string; esquecer de fechar conexão esgota o pool.",["luke"]]
+  ]],
+  ["Banco de Dados II — Transações e concorrência", ["ddia","pgiso"], [
+   ["Transactions","Agrupar operações em tudo-ou-nada. No .NET: <code>BeginTransaction</code>, <code>TransactionScope</code> ou o padrão do EF Core.",["eftrans"]],
+   ["ACID","Atomicidade, Consistência, Isolamento e Durabilidade. Saiba explicar cada letra com exemplo.",["ddia"]],
+   ["Isolation Levels","Read Uncommitted, Read Committed, Repeatable Read, Serializable. O Oracle usa Read Committed por padrão.",["pgiso"]],
+   ["Dirty Read","Ler dado de outra transação que ainda não fez commit.",["pgiso"]],
+   ["Non-repeatable Read","Ler a mesma linha duas vezes e obter valores diferentes porque outra transação alterou.",["pgiso"]],
+   ["Phantom Read","Repetir uma consulta e aparecerem linhas novas inseridas por outra transação.",["pgiso"]],
+   ["Locks","Bloqueios de linha ou tabela para controlar acesso concorrente.",["ddia"]],
+   ["Deadlocks","Duas transações esperando o lock uma da outra. O banco mata uma; evite acessando recursos na mesma ordem.",["ddia"]],
+   ["Optimistic Locking","Não bloqueia; detecta conflito no update por versão. No EF Core: concurrency token ou <code>RowVersion</code>.",["efconc"]],
+   ["Pessimistic Locking","Bloqueia na leitura, como <code>SELECT ... FOR UPDATE</code>. Seguro, mas reduz concorrência.",["ddia"]],
+   ["MVCC","Várias versões da linha para leitores não bloquearem escritores. Oracle e Postgres usam.",["pgmvcc"]],
+   ["Replication","Cópias do banco em outras máquinas para leitura e alta disponibilidade. Introduz atraso de replicação.",["ddia"]]
+  ]],
+  ["APIs, autenticação e segurança", ["owasp","aspsec","apidesign"], [
+   ["REST","Recursos, verbos, status codes corretos, paginação e versionamento.",["apidesign"]],
+   ["Stateless","O servidor não guarda estado da sessão entre requisições, o que permite escalar horizontalmente.",["apidesign"]],
+   ["Authentication","Provar quem é o usuário: senha, token, OAuth/OpenID Connect.",["aspsec"]],
+   ["Authorization","Decidir o que o usuário pode fazer. No ASP.NET Core: roles, claims e policies.",["aspauthz"]],
+   ["Sessions","Estado no servidor ligado a um ID enviado pelo cliente.",["aspsec"]],
+   ["Cookies","Dados enviados automaticamente pelo navegador. Flags HttpOnly, Secure e SameSite.",["mdnhttp"]],
+   ["JWT","Token assinado com claims, validado sem consultar o banco. Configurado com <code>AddJwtBearer</code>. Cuidado com expiração e revogação.",["jwt","aspsec"]],
+   ["Password Hashing","Nunca guardar senha em texto. Use algoritmos lentos: PBKDF2 (usado pelo ASP.NET Identity), bcrypt ou Argon2.",["owasppw"]],
+   ["Salt","Valor aleatório por senha que impede rainbow tables e senhas iguais com hash igual.",["owasppw"]],
+   ["CORS","Regra do navegador que bloqueia chamadas entre origens diferentes, a não ser que o servidor permita.",["cors","mdncors"]],
+   ["Idempotência","Repetir a mesma requisição não muda o resultado. GET, PUT e DELETE são; POST precisa de chave de idempotência.",["idemp"]],
+   ["SQL Injection","Concatenar input em SQL permite executar comandos do atacante. Use parâmetros no Dapper e no ADO.NET.",["owaspsql"]]
+  ]],
+  ["Backend em produção", ["sre","otel"], [
+   ["Logs","Registros de eventos. Prefira logs estruturados com <code>ILogger</code> e message templates.",["logging"]],
+   ["Metrics","Números agregados no tempo: latência, throughput, taxa de erro.",["otel"]],
+   ["Tracing","Acompanhar uma requisição entre serviços. No .NET: <code>Activity</code> e OpenTelemetry.",["otel"]],
+   ["Observability","Logs, métricas e traces juntos para entender o sistema sem precisar debugar em produção.",["otel","sre"]],
+   ["Health Checks","Endpoints que dizem se o serviço e suas dependências estão de pé. <code>AddHealthChecks</code> e <code>MapHealthChecks</code>.",["health"]],
+   ["SLI / SLO","Indicador de nível de serviço e a meta para ele. Base de error budgets.",["sre"]],
+   ["CI/CD","Build, testes e deploy automatizados a cada mudança. Você já usa no Azure; saiba explicar o pipeline.",["azpipelines"]],
+   ["Rolling Deployment","Atualizar instâncias aos poucos, mantendo o serviço no ar.",["sre"]],
+   ["Blue/Green Deployment","Dois ambientes idênticos e a troca de tráfego de um para o outro. Deployment slots no Azure fazem isso.",["slots"]],
+   ["Canary Deployment","Liberar a versão nova para uma pequena parte do tráfego e observar antes de expandir.",["sre"]],
+   ["Rollback","Voltar à versão anterior rapidamente. Exige migrations de banco compatíveis com as duas versões.",["sre"]]
+  ]]
+ ]},
+ { t: ".NET Backend", d: "Como o .NET funciona por baixo: o CLR, o gerenciamento de memória e o garbage collector, concorrência com Task e async/await, e o funcionamento interno do ASP.NET Core e do EF Core. São os assuntos clássicos das perguntas técnicas em vagas .NET.", w: [
+  ["CLR e memória", ["kokosa","gc","managedexec","perf8"], [
+   ["SDK vs Runtime vs CLR","O SDK traz compilador e ferramentas; o runtime executa apps; o CLR é a máquina virtual dentro do runtime que cuida de JIT, GC e tipos.",["managedexec"],1],
+   ["IL (Intermediate Language)","Código intermediário gerado pelo compilador C#, independente de plataforma. É o equivalente ao bytecode Java.",["managedexec"],1],
+   ["Assemblies e carregamento","DLLs com IL e metadados. O <code>AssemblyLoadContext</code> carrega e resolve dependências.",["alc"],1],
+   ["JIT e Tiered Compilation","O JIT compila IL para nativo na primeira chamada. Com tiered compilation, começa rápido (Tier 0) e recompila otimizado (Tier 1) os métodos quentes, com PGO dinâmico.",["tiered","perf8"],1],
+   ["Native AOT","Compilar tudo para nativo antes de executar: startup rápido e menos memória, mas com limites de reflection.",["aot"],1],
+   ["Value types vs Reference types","struct é copiado por valor e pode viver na stack ou dentro de outro objeto; class é referência para o heap. Pergunta clássica de entrevista.",["valtypes"],1],
+   ["Boxing e Unboxing","Converter value type para object aloca no heap. Acontece escondido em coleções não genéricas e interfaces.",["boxing"],1],
+   ["Garbage Collection","O GC encontra objetos inalcançáveis a partir das raízes (stack, estáticos, handles) e libera a memória.",["gc"]],
+   ["Gerações 0, 1 e 2","Objetos novos nascem na Gen0; os que sobrevivem são promovidos. Coletar Gen0 é barato, Gen2 é caro.",["gc","kokosa"],1],
+   ["Large Object Heap (LOH)","Objetos a partir de 85 KB vão para o LOH, coletado só com Gen2 e não compactado por padrão. Arrays grandes geram fragmentação.",["gc","kokosa"],1],
+   ["Workstation vs Server GC","Server GC usa um heap e uma thread de GC por núcleo, ideal para ASP.NET Core. Workstation favorece apps desktop.",["gcwk"],1],
+   ["IDisposable, using e Finalizers","Dispose libera recursos não gerenciados de forma determinística. Finalizers são rede de segurança e atrasam a coleta.",["dispose"],1],
+   ["Span&lt;T&gt;, Memory&lt;T&gt; e ArrayPool","Trabalhar com fatias de memória sem alocar e reaproveitar buffers. Base das otimizações do .NET moderno.",["span"],1],
+   ["Memory Leaks","Em .NET são referências esquecidas: eventos não desinscritos, caches estáticos crescendo, timers.",["memleak"]],
+   ["OutOfMemoryException e StackOverflowException","OOM quando o heap não consegue alocar; StackOverflow em recursão infinita, que derruba o processo sem catch.",["kokosa"],1]
+  ]],
+  ["Fundamentos de concorrência", ["albahari","ostep"], [
+   ["Process vs Thread","Revisão da semana 2, agora pensando em compartilhamento de memória.",["ostep"]],
+   ["Concurrency vs Parallelism","Concorrência é lidar com várias coisas ao mesmo tempo; paralelismo é executar várias ao mesmo tempo em núcleos diferentes.",["albahari"]],
+   ["Race Condition","Resultado depende da ordem de execução das threads, como dois <code>count++</code> simultâneos.",["albahari"]],
+   ["Critical Section","Trecho que só uma thread pode executar por vez.",["ostep"]],
+   ["Thread Safety","Código que funciona corretamente com várias threads. Imutabilidade é o caminho mais simples.",["albahari"]],
+   ["Mutex","Exclusão mútua. No .NET, <code>Mutex</code> funciona entre processos; dentro do processo use <code>lock</code>.",["syncprim"]],
+   ["Lock","Mecanismo que garante acesso exclusivo à seção crítica.",["lockstmt"]],
+   ["Semaphore","Permite até N threads ao mesmo tempo. Útil para limitar concorrência.",["syncprim"]],
+   ["Atomicity","Operação que acontece inteira ou não acontece, sem estado intermediário visível.",["interlocked"]],
+   ["Visibility","Uma escrita numa thread pode não ser vista por outra por causa de cache e reordenação.",["albahari"]],
+   ["Deadlock","Threads esperando umas pelas outras para sempre. Evite com ordem fixa de locks e timeouts.",["albahari"]]
+  ]],
+  ["Concorrência e async em C#", ["toubasync","clearybook","fowler","albahari"], [
+   ["Memory model do .NET","As regras de reordenação e visibilidade entre threads. <code>volatile</code> e barreiras de memória.",["volatile","albahari"],1],
+   ["lock e Monitor","<code>lock</code> é açúcar sintático para <code>Monitor.Enter/Exit</code>. Não pode ter <code>await</code> dentro.",["lockstmt"],1],
+   ["Interlocked","Operações atômicas sem lock: Increment, Exchange, CompareExchange.",["interlocked"],1],
+   ["SemaphoreSlim e ReaderWriterLockSlim","SemaphoreSlim tem <code>WaitAsync</code> e é o \"lock\" de código async. ReaderWriterLockSlim permite muitos leitores e um escritor.",["syncprim"],1],
+   ["Concurrent Collections","<code>ConcurrentDictionary</code>, <code>ConcurrentQueue</code> e <code>BlockingCollection</code>.",["concurrent"],1],
+   ["ThreadPool","Pool de threads reaproveitadas pelo runtime. Bloquear threads dele causa thread starvation no ASP.NET Core.",["threadpool","fowler"],1],
+   ["Task e TPL","Task representa uma operação futura. A TPL traz <code>Task.Run</code>, <code>WhenAll</code>, <code>WhenAny</code> e continuations.",["tpl"],1],
+   ["async/await e a state machine","O compilador transforma o método async numa state machine que retoma após o await. Async não cria thread nova.",["toubasync","asyncdocs"],1],
+   ["SynchronizationContext e ConfigureAwait","Define onde a continuação roda. O ASP.NET Core não tem contexto, mas bibliotecas devem usar <code>ConfigureAwait(false)</code>.",["configawait"],1],
+   ["CancellationToken","Cancelamento cooperativo. Propague o token da requisição até o banco e o HttpClient.",["cancel"],1],
+   ["Deadlock com .Result e .Wait()","Bloquear em código async pode travar a thread que a continuação precisa. Regra: async até o topo.",["cleary","fowler"],1],
+   ["Channels","Filas produtor/consumidor async de alta performance com backpressure.",["channels"],1],
+   ["Parallel.ForEachAsync e PLINQ","Paralelismo de dados para trabalho CPU-bound ou I/O com limite de concorrência.",["plinq","tpl"],1],
+   ["ValueTask","Evita alocar Task quando o resultado costuma vir síncrono. Não pode ser aguardado duas vezes.",["valuetask"],1]
+  ]],
+  ["ASP.NET Core e EF Core por baixo", ["andrewlock","milan","nick","efperf"], [
+   ["IoC","Inversão de controle: o framework cria e liga os objetos, não o seu código.",["di"]],
+   ["Dependency Injection","O container nativo <code>IServiceCollection</code> resolve dependências pelo construtor.",["di"]],
+   ["Lifetimes: Singleton, Scoped, Transient","Singleton vive a aplicação toda; Scoped vive uma requisição; Transient é criado a cada injeção. DbContext é Scoped.",["di"],1],
+   ["Captive dependency","Um Singleton que recebe um Scoped prende ele para sempre: bugs de estado e de DbContext compartilhado. <code>ValidateScopes</code> detecta.",["di","andrewlock"],1],
+   ["Generic Host e Program.cs","O host monta configuração, logging, DI e hosted services antes de iniciar o servidor.",["host"],1],
+   ["Middleware pipeline","Cadeia de componentes que tratam a requisição em ordem. A ordem do <code>app.Use...</code> muda o comportamento.",["middleware"],1],
+   ["Request Lifecycle","Kestrel → middlewares → routing → endpoint → filtros → action → resposta de volta pelo pipeline.",["middleware","routing"]],
+   ["Controllers vs Minimal APIs","Controllers trazem filtros e convenções; Minimal APIs são enxutas e mais rápidas de montar.",["minimal"],1],
+   ["Filters e Model Binding","Filtros rodam antes e depois da action (autorização, validação, exceção). Model binding converte a requisição em parâmetros.",["filters","modelbinding"],1],
+   ["Options pattern e configuração","Configuração tipada com <code>IOptions</code>, <code>IOptionsSnapshot</code> e <code>IOptionsMonitor</code>.",["options"],1],
+   ["EF Core e DbContext","DbContext é a unidade de trabalho: rastreia entidades e grava tudo no <code>SaveChanges</code>. Não é thread-safe.",["eftrack"],1],
+   ["Change Tracker e Entity States","Added, Modified, Deleted, Unchanged, Detached. Entender isso explica updates inesperados.",["eftrack"],1],
+   ["Lazy vs Eager vs Explicit loading","Eager com <code>Include</code>, explicit com <code>Load</code>, lazy com proxies. Lazy esconde queries extras.",["efload"]],
+   ["N+1","Uma query para a lista e mais uma por item. Resolva com Include, projeção ou query única. Vale para NHibernate também.",["efperf","efload"]],
+   ["AsNoTracking e compiled queries","Leituras sem rastreamento são mais rápidas. Compiled queries evitam recompilar a expressão.",["eftracking","efperf"],1],
+   ["SaveChanges e transações","SaveChanges já roda numa transação. Para várias operações use <code>BeginTransaction</code>. Migrations versionam o schema.",["eftrans","efmig"],1],
+   ["Dapper vs EF Core vs NHibernate","Dapper é micro-ORM: SQL na mão, rápido. EF Core e NHibernate rastreiam entidades. Saiba quando escolher cada um; você usa dois deles no dia a dia.",["dapper","efperf"],1]
+  ]]
+ ]},
+ { t: "Sistemas Distribuídos", d: "O que muda quando o sistema roda em várias máquinas: filas e Kafka, falhas parciais, retries e idempotência, consistência entre réplicas e transações entre serviços (2PC, Outbox e Saga).", w: [
+  ["Mensageria e Event-Driven Architecture", ["ddia","kafka","eventdriven","masstransit"], [
+   ["Synchronous vs Asynchronous","Chamada síncrona acopla disponibilidade dos serviços; mensageria desacopla no tempo.",["eventdriven"]],
+   ["Message Queue","Fila ponto a ponto: cada mensagem é processada por um consumidor. RabbitMQ e Azure Service Bus.",["rabbit"]],
+   ["Pub/Sub","Uma mensagem publicada chega a vários assinantes.",["eventdriven"]],
+   ["Event-Driven Architecture","Serviços reagem a eventos em vez de chamar uns aos outros diretamente.",["eventdriven"]],
+   ["Kafka","Log distribuído e durável de eventos. Em .NET use Confluent.Kafka.",["kafka","confluent"]],
+   ["Topics","Categoria de eventos no Kafka.",["kafka"]],
+   ["Partitions","Divisão do tópico para paralelismo. A ordem só é garantida dentro da partição.",["kafka"]],
+   ["Offsets","Posição do consumidor na partição. Quando commitar o offset define a garantia de entrega.",["kafka"]],
+   ["Consumer Groups","Consumidores do mesmo grupo dividem as partições entre si.",["kafka"]],
+   ["Ordering","Use a chave da mensagem para mandar eventos da mesma entidade à mesma partição.",["kafka"]],
+   ["At-most-once","Pode perder mensagem, nunca duplica.",["ddia"]],
+   ["At-least-once","Nunca perde, pode duplicar. O consumidor precisa ser idempotente.",["idemp"]],
+   ["Exactly-once","Na prática: at-least-once + idempotência, ou transações do Kafka dentro do próprio Kafka.",["ddia"]],
+   ["MassTransit","Abstração de mensageria em .NET sobre RabbitMQ, Azure Service Bus e Kafka, com retries, sagas e outbox.",["masstransit"],1],
+   ["BackgroundService e IHostedService","Base para consumidores e workers rodando dentro do host .NET.",["hosted"],1]
+  ]],
+  ["Falhas e confiabilidade", ["awsretry","resilience","patterns"], [
+   ["Partial Failures","Em rede, uma chamada pode falhar, demorar ou ter dado certo sem você saber.",["ddia"]],
+   ["Timeout","Sempre defina limite de espera. O HttpClient tem 100s por padrão, o que é muito.",["awsretry"]],
+   ["Retry","Tentar de novo falhas transitórias. Só é seguro em operações idempotentes.",["retrypat"]],
+   ["Exponential Backoff","Aumentar o intervalo entre tentativas para não sobrecarregar quem já está mal.",["awsretry"]],
+   ["Jitter","Aleatoriedade no intervalo para os clientes não tentarem todos juntos.",["awsretry"]],
+   ["Idempotência","Processar a mesma mensagem duas vezes sem efeito duplicado, com chave de deduplicação.",["idemp"]],
+   ["Circuit Breaker","Parar de chamar uma dependência que está falhando e testar de tempos em tempos.",["circuit"]],
+   ["Rate Limiting","Limitar requisições por cliente. O ASP.NET Core tem middleware nativo com <code>AddRateLimiter</code>.",["ratelimit"]],
+   ["Fault Tolerance","Continuar funcionando com degradação: fallback, cache, filas.",["patterns"]],
+   ["Polly e Microsoft.Extensions.Resilience","Biblioteca padrão de resiliência no .NET: retry, timeout, circuit breaker e hedging em pipelines.",["polly","resilience"],1]
+  ]],
+  ["Consistência e transações distribuídas", ["ddia","jepsen","patterns"], [
+   ["Replication","Líder-seguidor, multi-líder e sem líder. Cada um com seus conflitos.",["ddia"]],
+   ["Strong Consistency","Toda leitura vê a última escrita, como se houvesse uma cópia só.",["jepsen"]],
+   ["Eventual Consistency","As réplicas convergem com o tempo, mas leituras podem vir desatualizadas.",["jepsen"]],
+   ["Quorums","Ler e escrever em maioria (R + W > N) para garantir sobreposição.",["ddia"]],
+   ["Consensus básico","Como nós concordam sobre um valor mesmo com falhas. Raft é o mais didático.",["raft"]],
+   ["Distributed Transactions","Uma operação que muda dados em mais de um serviço ou banco.",["ddia"]],
+   ["Two-Phase Commit","Coordenador pergunta se todos podem fazer commit e depois manda confirmar. Bloqueia se o coordenador cair.",["ddia"]],
+   ["Transactional Outbox","Gravar o evento numa tabela na mesma transação do dado e publicar depois. MassTransit tem outbox com EF Core.",["outbox","masstransit"]],
+   ["Saga","Sequência de transações locais com ações de compensação se algo falhar.",["saga"]],
+   ["Choreography vs Orchestration","Na coreografia cada serviço reage a eventos; na orquestração um coordenador manda nos passos.",["saga","eshop"]]
+  ]]
+ ]},
+ { t: "System Design", d: "Projetar sistemas escaláveis numa entrevista: levantar requisitos, estimar capacidade, desenhar a arquitetura e discutir trade-offs, praticando com problemas clássicos e simulações completas.", w: [
+  ["Fundamentos de System Design", ["hello","sdprimer","bbg"], [
+   ["Como conduzir uma entrevista de System Design","Estrutura: requisitos → estimativas → API → dados → arquitetura → aprofundar gargalos. Você conduz a conversa.",["hello"]],
+   ["Functional Requirements","O que o sistema faz. Feche escopo com o entrevistador em 3 a 5 itens.",["hello"]],
+   ["Non-Functional Requirements","Latência, disponibilidade, consistência, escala. São eles que definem a arquitetura.",["hello"]],
+   ["Capacity Estimation","Contas de guardanapo: requisições por segundo, armazenamento, banda.",["sdprimer"]],
+   ["API Design","Endpoints, payloads, paginação e idempotência.",["apidesign"]],
+   ["Data Model","Entidades, chaves, padrões de acesso e escolha de SQL vs NoSQL.",["ddia"]],
+   ["High-Level Architecture","Diagrama com cliente, load balancer, serviços, banco, cache e filas.",["sdprimer"]],
+   ["Horizontal Scaling","Adicionar máquinas em vez de máquinas maiores. Exige serviços stateless.",["sdprimer"]],
+   ["Load Balancer","Distribui tráfego entre instâncias: round robin, least connections, L4 vs L7.",["cflb"]],
+   ["Cache","Cache-aside, write-through, invalidação e TTL. No .NET: <code>IMemoryCache</code>, <code>IDistributedCache</code> e Redis.",["caching"]],
+   ["CDN","Servidores na borda servindo conteúdo estático perto do usuário.",["cfcdn"]]
+  ]],
+  ["Escala, dados e trade-offs", ["ddia","sdprimer","azarch"], [
+   ["Replication","Réplicas de leitura para escalar consultas e alta disponibilidade.",["ddia"]],
+   ["Partitioning","Dividir dados por faixa ou hash para distribuir carga.",["ddia"]],
+   ["Sharding","Particionamento entre servidores de banco diferentes. Complica joins e transações.",["sdprimer"]],
+   ["Caching","Onde colocar cache: cliente, CDN, aplicação, banco. E o problema de invalidar.",["caching"]],
+   ["Queues","Absorver picos e desacoplar serviços com processamento assíncrono.",["patterns"]],
+   ["Consistency","Quanto atraso de dado o negócio tolera. Saldo bancário e contador de likes têm respostas diferentes.",["jepsen"]],
+   ["Availability","Percentual de tempo no ar. 99,9% são cerca de 8,7 horas fora por ano.",["sre"]],
+   ["CAP Theorem","Durante uma partição de rede, escolha entre consistência e disponibilidade.",["ddia"]],
+   ["Hotspots","Uma chave ou partição recebendo carga desproporcional, como um famoso no feed.",["ddia"]],
+   ["Single Point of Failure","Componente cuja queda derruba tudo. Remova com redundância.",["sdprimer"]],
+   ["Fault Tolerance","Projetar contando com falha de máquina, rede e dependências.",["azarch"]]
+  ]],
+  ["Prática de System Design I", ["hello","bbg","sdprimer"], [
+   ["URL Shortener","Geração de IDs únicos, leitura muito maior que escrita, cache e redirecionamento.",["hello"]],
+   ["Rate Limiter","Token bucket, sliding window e contadores distribuídos em Redis.",["hello","ratelimit"]],
+   ["Distributed Message Queue","Partições, replicação, offsets e garantias de entrega.",["kafka"]],
+   ["Notification / Webhook System","Fan-out, retries com backoff, idempotência e fila de mensagens mortas.",["hello"]]
+  ]],
+  ["Prática de System Design II", ["hello","bbg","interviewing"], [
+   ["Feed / Social Network","Fan-out na escrita vs na leitura e o caso das contas famosas.",["hello"]],
+   ["Chat / Realtime System","Conexões persistentes com WebSocket, presença e ordenação. No .NET: SignalR com backplane.",["signalr","hello"]],
+   ["Distributed Storage","Blocos, metadados, replicação e consistência.",["ddia"]],
+   ["Payment System","Idempotência, ledger, reconciliação e consistência forte. Conversa bem com sua experiência em backoffice financeiro.",["hello","outbox"]],
+   ["Mock Interviews","Simular com alguém ou com plataforma, falando em voz alta e com tempo marcado.",["interviewing"]],
+   ["Explicar trade-offs","Toda decisão tem custo. Diga o que você ganha, o que perde e por que aceita.",["hello"]],
+   ["Identificar gargalos","Onde o sistema quebra primeiro com 10x de carga, e o que você mudaria.",["sdprimer"]],
+   ["Evoluir arquitetura conforme a escala","Começar simples e evoluir para cache, réplicas, filas e sharding conforme os números pedem.",["sdprimer"]]
+  ]]
+ ]}
+];
+
+
+const KEY = "roadmap-csharp-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+const $ = id => document.getElementById(id);
+const strip = h => { const s = document.createElement("span"); s.innerHTML = h; return s.textContent; };
+const ICON = { "Vídeo":"vid", "Curso":"cur", "Livro":"liv", "Doc":"doc", "Artigo":"art", "Prática":"lc", "Referência":"ref", "Visualização":"vis", "Guia":"gui", "Tutorial":"tut", "Repo":"git", "Blog":"blg" };
+
+const root = $("root"), all = [];
+let wk = 0;
+D.forEach((s, si) => {
+  const det = document.createElement("details");
+  det.className = "sec"; if (si === 0) det.open = true;
+  det.innerHTML = `<summary><span class="secnum">SEÇÃO ${String(si+1).padStart(2,"0")}</span><h2 class="sectitle">${s.t}</h2><span class="secmeta" data-sec="${si}"></span><p class="secdesc">${s.d}</p></summary>`;
+  const body = document.createElement("div"); body.className = "secbody";
+  s.w.forEach((w, wi) => {
+    wk++;
+    const card = document.createElement("section"); card.className = "week";
+    card.innerHTML = `<div class="weekhead"><div><span class="weeklabel">Semana ${String(wk).padStart(2,"0")}</span><h3 class="weektitle">${w[0]}</h3></div><span class="weekcount"></span></div>`;
+    const ul = document.createElement("ul");
+    w[2].forEach((it, ii) => {
+      const id = `s${si}w${wi}i${ii}`;
+      const t = { id, idx: all.length, name: it[0], desc: it[1], mats: it[2] || [], net: it[3], si, sec: s.t, week: wk, wtitle: w[0], wmats: w[1], card, det };
+      const li = document.createElement("li"); li.className = "row"; li.dataset.idx = t.idx;
+      li.innerHTML = `<button class="chk" type="button" role="checkbox" aria-checked="false" aria-label="Marcar ${strip(it[0]).replace(/"/g,"")}"><span class="box"></span></button><button class="open" type="button"><span class="nm">${it[0]}${it[3] ? '<span class="tag">.NET</span>' : ""}</span><span class="mcount">${t.mats.length}</span></button>`;
+      t.li = li; all.push(t); ul.appendChild(li);
+    });
+    card.appendChild(ul); body.appendChild(card);
+  });
+  det.appendChild(body); root.appendChild(det);
+});
+
+let cur = 0;
+const host = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return ""; } };
+function matHTML(k) {
+  const r = R[k]; if (!r) return "";
+  const esc = r[0].replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  return `<a class="mat" href="${r[1]}" target="_blank" rel="noopener"><span class="mico">${ICON[r[2]] || "lnk"}</span><span style="min-width:0"><span class="mtitle">${esc}</span><span class="mmeta"><span class="kind">${r[2]}</span><span class="dom">${host(r[1])}</span></span></span></a>`;
+}
+function show(i, fromUser) {
+  cur = i; const t = all[i];
+  all.forEach(x => x.li.classList.toggle("active", x.idx === i));
+  $("crumb").innerHTML = `<span>Roadmap</span><span>${t.sec}</span><span>${t.wtitle}</span>`;
+  $("pweek").textContent = "Semana " + String(t.week).padStart(2, "0");
+  $("ptitle").innerHTML = t.name;
+  $("pdesc").innerHTML = t.desc;
+  $("tmats").innerHTML = t.mats.map(matHTML).join("");
+  $("tcount").textContent = t.mats.length;
+  const wm = t.wmats.filter(k => !t.mats.includes(k));
+  $("wmats").innerHTML = wm.map(matHTML).join("");
+  $("wcount").textContent = wm.length;
+  const p = all[i-1], n = all[i+1];
+  $("prev").disabled = !p; $("prevn").textContent = p ? strip(p.name) : "";
+  $("nextb").disabled = !n; $("nextn").textContent = n ? strip(n.name) : "";
+  syncMark();
+  document.querySelector(".pbody").scrollTop = 0;
+  if (fromUser) {
+    if (!t.det.open) t.det.open = true;
+    if (!window.matchMedia("(max-width: 1000px)").matches) { const r = $("panel").getBoundingClientRect(); if (r.top > window.innerHeight || r.bottom < 0) $("roadmap").scrollIntoView(); }
+    if (window.matchMedia("(max-width: 1000px)").matches) document.body.classList.add("sheet");
+  }
+}
+function syncMark() {
+  const on = !!state[all[cur].id];
+  $("pmark").setAttribute("aria-pressed", on);
+  $("pmark").textContent = on ? "Estudado ✓" : "Marcar como estudado";
+}
+function toggle(i) {
+  const t = all[i];
+  if (state[t.id]) delete state[t.id]; else state[t.id] = 1;
+  save(); render();
+}
+function render() {
+  const done = all.filter(x => state[x.id]).length;
+  $("total").textContent = `${done}/${all.length} tópicos`;
+  $("bar").style.width = (done / all.length * 100) + "%";
+  all.forEach(x => { const on = !!state[x.id]; x.li.classList.toggle("done", on); x.li.querySelector(".chk").setAttribute("aria-checked", on); });
+  D.forEach((s, si) => { const it = all.filter(x => x.si === si); document.querySelector(`[data-sec="${si}"]`).textContent = `${it.filter(x => state[x.id]).length}/${it.length}`; });
+  document.querySelectorAll(".week").forEach(card => { const it = all.filter(x => x.card === card), n = it.filter(x => state[x.id]).length; card.querySelector(".weekcount").textContent = `${n}/${it.length}`; card.classList.toggle("complete", n === it.length); });
+  const nx = all.find(x => !state[x.id]);
+  $("next").innerHTML = nx ? `Próximo tópico: <button type="button" id="gonext"></button> · semana ${nx.week}` : "Roadmap concluído.";
+  if (nx) { $("gonext").textContent = strip(nx.name); $("gonext").onclick = () => show(nx.idx, true); }
+  syncMark();
+}
+root.addEventListener("click", e => {
+  const row = e.target.closest(".row"); if (!row) return;
+  const i = +row.dataset.idx;
+  if (e.target.closest(".chk")) toggle(i); else if (e.target.closest(".open")) show(i, true);
+});
+$("pmark").onclick = () => toggle(cur);
+$("prev").onclick = () => cur > 0 && show(cur - 1, false);
+$("nextb").onclick = () => cur < all.length - 1 && show(cur + 1, false);
+const closeSheet = () => document.body.classList.remove("sheet");
+$("close").onclick = closeSheet; $("scrim").onclick = closeSheet;
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+let expanded = false;
+$("expand").onclick = e => { expanded = !expanded; document.querySelectorAll("details.sec").forEach(d => d.open = expanded); e.target.textContent = expanded ? "Recolher tudo" : "Expandir tudo"; };
+const rb = $("reset"); let armed = false;
+rb.onclick = () => {
+  if (!armed) { armed = true; rb.textContent = "Clique de novo para confirmar"; setTimeout(() => { armed = false; rb.textContent = "Zerar progresso"; }, 3000); return; }
+  state = {}; save(); armed = false; rb.textContent = "Zerar progresso"; render();
+};
+render();
+const first = all.find(x => !state[x.id]) || all[0];
+show(first.idx, false);
+</script>
+</body>
+</html>
